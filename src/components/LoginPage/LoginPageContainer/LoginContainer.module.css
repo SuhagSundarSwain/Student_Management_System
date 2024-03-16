@@ -1,0 +1,10 @@
+.login_container {
+  padding: 0.7%;
+  background-color: #f4f5fb;
+  height: 100%;
+  width: 85%;
+  border-radius: 100px;
+  display: flex;
+
+  align-items: center;
+}
