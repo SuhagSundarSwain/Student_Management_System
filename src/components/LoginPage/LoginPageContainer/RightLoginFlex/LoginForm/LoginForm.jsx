@@ -1,7 +1,7 @@
 import { Button, FormControl, IconButton } from "@mui/material";
 // import styles from "./LoginForm.module.css";
 // import { useState } from "react";
-import LoginTextField from "./LoginTextField/LoginTextField";
+import LoginSignupTextField from "../LoginTextField/LoginSignupTextField";
 import { AccountCircle, Key, KeyOff } from "@mui/icons-material";
 import { useState } from "react";
 function LoginForm() {
@@ -17,7 +17,7 @@ function LoginForm() {
   }
   return (
     <FormControl sx={{ width: "40%" }}>
-      <LoginTextField
+      <LoginSignupTextField
         type="text"
         label="User ID"
         placeholder="Enter your Email or User ID"
@@ -26,11 +26,10 @@ function LoginForm() {
         error={validateEmail(userID) ? false : true}
         onChange={(uid) => (userID = uid)}
       />
-      <LoginTextField
+      <LoginSignupTextField
         type={showPassword ? "text" : "password"}
         label="Password"
         placeholder="Enter your Password"
-        errorMessage="please enter correct Password"
         icon={
           <IconButton
             onClick={() => {

@@ -6,7 +6,7 @@ function LoginContainer() {
   return (
     <div className={styles.login_container}>
       <LeftLoginFlex />
-      <RightLoginFlex/>
+      <RightLoginFlex />
     </div>
   );
 }

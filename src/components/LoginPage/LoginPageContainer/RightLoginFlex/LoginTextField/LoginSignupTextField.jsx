@@ -1,6 +1,6 @@
 import { InputAdornment, TextField } from "@mui/material";
 
-export default function LoginTextField({
+export default function LoginSignupTextField({
   type,
   label,
   placeholder,
@@ -13,7 +13,7 @@ export default function LoginTextField({
     <TextField
       margin="normal"
       InputProps={{
-        endAdornment: <InputAdornment>{icon}</InputAdornment>,
+        endAdornment: <InputAdornment position="end">{icon}</InputAdornment>,
       }}
       type={type}
       error={error}
