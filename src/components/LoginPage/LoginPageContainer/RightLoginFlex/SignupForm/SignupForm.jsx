@@ -1,58 +1,100 @@
+import { useReducer, useRef, useState } from "react";
 import { FormControl, IconButton, Button } from "@mui/material";
 import LoginSignupTextField from "../LoginTextField/LoginSignupTextField";
 import { AccountCircle, Badge, Key, KeyOff, Phone } from "@mui/icons-material";
-import { useState } from "react";
 
-export default function SignupForm() {
-  let [showPassword, setShowPassword] = useState(false);
-  let name, password, email, phone;
+export default function SignUpForm() {
+  const [showPassword, setShowPassword] = useState(false);
+  const [signUpErrors, dispatchSignUpErrors] = useReducer(signUpReducer, {});
+
+  let nameElement = useRef("");
+  let passwordElement = useRef("");
+  let uidElement = useRef("");
+  let phoneElement = useRef("");
+
+  function signUp(name, phone, uid, password) {
+    fetch("http://127.0.0.1:1412/signup", {
+      headers: { "Content-Type": "application/json" },
+      method: "POST",
+      body: JSON.stringify({
+        phone,
+        password,
+        uid,
+        name,
+      }),
+    })
+      .then((res) => {
+        if (res.ok || res.status === 400) {
+          return res.json();
+        }
+        throw new Error("Failed Signup");
+      })
+      .then((data) => {
+        if (data.errors) {
+          dispatchSignUpErrors({ type: "SET_ERRORS", errors: data.errors });
+        } else {
+          dispatchSignUpErrors({ type: "NO_ERRORS", errors: {} });
+        }
+      })
+      .catch((error) => console.error(error));
+  }
+
   return (
     <FormControl sx={{ width: "40%" }}>
       <LoginSignupTextField
         type="text"
         label="Name"
         placeholder="Enter your Name"
-        errorMessage=""
+        errorMessage={signUpErrors["name"]}
         icon={<Badge />}
-        error={false}
-        onChange={(value) => (name = value)}
+        error={!!signUpErrors["name"]}
+        ref={nameElement}
       />
       <LoginSignupTextField
         type="text"
         label="Email/User ID"
         placeholder="Enter your Email or User ID"
-        errorMessage=""
+        errorMessage={signUpErrors["uid"]}
         icon={<AccountCircle />}
-        error={false}
-        onChange={(value) => (email = value)}
+        error={!!signUpErrors["uid"]}
+        ref={uidElement}
       />
       <LoginSignupTextField
         type="text"
         label="Phone"
         placeholder="Enter your Phone Number"
-        errorMessage=""
+        errorMessage={signUpErrors["phone"]}
         icon={<Phone />}
-        error={false}
-        onChange={(value) => (phone = value)}
+        error={!!signUpErrors["phone"]}
+        ref={phoneElement}
       />
       <LoginSignupTextField
         type={showPassword ? "text" : "password"}
         label="Password"
         placeholder="Enter your Password"
+        errorMessage={signUpErrors["password"]}
+        error={!!signUpErrors["password"]}
         icon={
           <IconButton
             onClick={() => {
-              setShowPassword(showPassword ? false : true);
+              setShowPassword(!showPassword);
             }}
           >
             {showPassword ? <Key /> : <KeyOff />}
           </IconButton>
         }
-        onChange={(value) => (password = value)}
-      />{" "}
+        ref={passwordElement}
+      />
       <Button
         variant="contained"
-        onClick={() => signUp(name, phone, email, password)}
+        onClick={() =>
+          signUp(
+            nameElement.current?.value,
+            phoneElement.current?.value,
+            uidElement.current?.value,
+            passwordElement.current?.value
+          )
+        }
       >
         Signup
       </Button>
@@ -60,6 +102,13 @@ export default function SignupForm() {
   );
 }
 
-function signUp(name, phone, email, password) {
-  console.log(name, phone, email, password);
+function signUpReducer(state, action) {
+  switch (action.type) {
+    case "SET_ERRORS":
+      return action.errors;
+    case "NO_ERRORS":
+      return action.errors;
+    default:
+      return state;
+  }
 }
