@@ -1,0 +1,12 @@
+.homepage {
+  width: 100%;
+}
+.heading {
+  margin: 40px 0px;
+  font-weight: bold;
+  font-family: cursive;
+}
+
+.card_section {
+  display: flex;
+}

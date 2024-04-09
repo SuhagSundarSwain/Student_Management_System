@@ -1,19 +1,46 @@
 import { Button, FormControl, IconButton } from "@mui/material";
 // import styles from "./LoginForm.module.css";
 // import { useState } from "react";
-import LoginSignupTextField from "../LoginTextField/LoginSignupTextField";
+import LoginSignupTextField from "../LoginSignupTextField/LoginSignupTextField";
 import { AccountCircle, Key, KeyOff } from "@mui/icons-material";
-import { useState } from "react";
+import { useReducer, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
+import { loginSignupActions } from "../../../../../store/loginSignupSlice";
 function LoginForm() {
-  // let [userId, setUserId] = useState("");
-  let [userID, setUserId] = useState("h@w.c");
-  let password = "";
+  const dispatch = useDispatch();
+  dispatch(loginSignupActions.setLogin());
+  let uidElement = useRef("");
+  let passwordElement = useRef("");
   let [showPassword, setShowPassword] = useState(false);
+  let [loginErrors, dispatchLoginErrors] = useReducer(loginReducer, {});
   function logIn() {
-    setUserId(userID);
-    if (validateEmail(userID)) {
-      console.log("user id : " + userID + "\npassword : " + password);
-    }
+    let uid = uidElement.current.value;
+    let password = passwordElement.current.value;
+    fetch("http://127.0.0.1:1412/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({
+        uid,
+        password,
+      }),
+    })
+      .then((res) => {
+        if (res.ok || res.status === 400) {
+          return res.json();
+        }
+        throw new Error("Login Error!!! Something went wrong");
+      })
+      .then((data) => {
+        if (data.errors) {
+          let errorAction = {
+            type: "SET_ERROR",
+            errors: data.errors,
+          };
+          dispatchLoginErrors(errorAction);
+        }
+      })
+      .catch((err) => console.log(err));
   }
   return (
     <FormControl sx={{ width: "40%" }}>
@@ -21,10 +48,10 @@ function LoginForm() {
         type="text"
         label="User ID"
         placeholder="Enter your Email or User ID"
-        errorMessage={validateEmail(userID) ? "" : "Enter a valid User ID"}
         icon={<AccountCircle />}
-        error={validateEmail(userID) ? false : true}
-        onChange={(uid) => (userID = uid)}
+        ref={uidElement}
+        errorMessage={loginErrors["uid"]}
+        error={loginErrors["uid"] ? true : false}
       />
       <LoginSignupTextField
         type={showPassword ? "text" : "password"}
@@ -39,7 +66,9 @@ function LoginForm() {
             {showPassword ? <Key /> : <KeyOff />}
           </IconButton>
         }
-        onChange={(pass) => (password = pass)}
+        ref={passwordElement}
+        errorMessage={loginErrors["password"]}
+        error={loginErrors["password"] ? true : false}
       />
       <Button>Forgot password?</Button>
       <br />
@@ -51,6 +80,15 @@ function LoginForm() {
 }
 export default LoginForm;
 
-function validateEmail(email) {
-  return /\S+@\S+\.\S+/.test(email);
+function loginReducer(state, action) {
+  if (action.type === "SET_ERROR") {
+    return action.errors;
+  } else if (action.type === "NO_ERROR") {
+    return {};
+  }
+  return state;
 }
+
+// function validateEmail(email) {
+//   return /\S+@\S+\.\S+/.test(email);
+// }

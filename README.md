@@ -1,4 +1,4 @@
-"Home Way Fronted Application"
+"Studnet Management Fronted Application"
 
 # Getting Started with Create React App
 
