@@ -1,6 +1,11 @@
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import LogoutButton from "./LogoutButton";
+import LoginButton from "./LoginButton";
+import SignupButton from "./SignupButton";
 
 const Header = () => {
+  const userInfo = useSelector((store) => store.userInfo);
   return (
     <header className="p-3 text-bg-dark">
       <div className="container" style={{ margin: "0px" }}>
@@ -66,12 +71,14 @@ const Header = () => {
           </form>
 
           <div className="text-end">
-            <Link to={"auth/login"} className="btn btn-outline-light me-2">
-              Login
-            </Link>
-            <Link to={"auth/signup"} type="button" className="btn btn-warning">
-              Sign-up
-            </Link>
+            {userInfo.loggedInStatus ? (
+              <LogoutButton />
+            ) : (
+              <>
+                <LoginButton />
+                <SignupButton />
+              </>
+            )}
           </div>
         </div>
       </div>

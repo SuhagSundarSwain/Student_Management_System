@@ -1,4 +1,5 @@
 import { useSelector } from "react-redux";
+import ScoreRow from "./ScoreRow";
 
 const ResultBodyData = () => {
   const semester = useSelector((store) => store.semester);
@@ -8,7 +9,7 @@ const ResultBodyData = () => {
         <p className="card-text">Semester {semester.currentSelectedSemester}</p>
       </u>
       <div>
-        <table class="table">
+        <table className="table">
           <thead>
             <tr>
               <th scope="col">SUBJECT CODE</th>
@@ -19,17 +20,12 @@ const ResultBodyData = () => {
           </thead>
           <tbody>
             {semester.semesterDetails.map((sub) => (
-              <tr>
-                <th scope="row">{sub.SUBJECT_CODE}</th>
-                <td>{sub.SUBJECT}</td>
-                <td>{sub.CREDIT}</td>
-                <td>{sub.GRADE}</td>
-              </tr>
+              <ScoreRow key={sub.SUBJECT_CODE} sub={sub} />
             ))}
 
             <tr>
               <th scope="row"></th>
-              <td colspan="2">SGPA : </td>
+              <td colSpan="2">SGPA : </td>
               <td>CGPA : </td>
             </tr>
           </tbody>

@@ -1,21 +1,35 @@
+import { useRef, useState, useEffect } from "react";
 import { Button, FormControl, IconButton } from "@mui/material";
-// import styles from "./LoginForm.module.css";
-// import { useState } from "react";
-import LoginSignupTextField from "../LoginSignupTextField/LoginSignupTextField";
 import { AccountCircle, Key, KeyOff } from "@mui/icons-material";
-import { useReducer, useRef, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { loginSignupActions } from "../../../../../store/loginSignupSlice";
+import { useNavigate } from "react-router-dom";
+import { userInfoActions } from "../../../../../store/userInfo";
+import LoginSignupTextField from "../LoginSignupTextField/LoginSignupTextField";
+
 function LoginForm() {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-  dispatch(loginSignupActions.setLogin());
-  let uidElement = useRef("");
-  let passwordElement = useRef("");
-  let [showPassword, setShowPassword] = useState(false);
-  let [loginErrors, dispatchLoginErrors] = useReducer(loginReducer, {});
-  function logIn() {
-    let uid = uidElement.current.value;
-    let password = passwordElement.current.value;
+  const { loggedInStatus } = useSelector((store) => store.userInfo);
+  const uidRef = useRef(null);
+  const passwordRef = useRef(null);
+  const [showPassword, setShowPassword] = useState(false);
+  const [loginErrors, setLoginErrors] = useState({});
+
+  useEffect(() => {
+    if (loggedInStatus === true) {
+      navigate("/");
+    }
+  }, [loggedInStatus]);
+
+  useEffect(() => {
+    dispatch(loginSignupActions.setLogin());
+  }, [dispatch]);
+
+  function handleLogin() {
+    const uid = uidRef.current.value;
+    const password = passwordRef.current.value;
+
     fetch("http://127.0.0.1:1412/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -33,15 +47,16 @@ function LoginForm() {
       })
       .then((data) => {
         if (data.errors) {
-          let errorAction = {
-            type: "SET_ERROR",
-            errors: data.errors,
-          };
-          dispatchLoginErrors(errorAction);
+          setLoginErrors(data.errors);
+        } else {
+          dispatch(userInfoActions.setUserId(data));
+
+          navigate("/");
         }
       })
       .catch((err) => console.log(err));
   }
+
   return (
     <FormControl sx={{ width: "40%" }}>
       <LoginSignupTextField
@@ -49,9 +64,9 @@ function LoginForm() {
         label="User ID"
         placeholder="Enter your Email or User ID"
         icon={<AccountCircle />}
-        ref={uidElement}
+        ref={uidRef}
         errorMessage={loginErrors["uid"]}
-        error={loginErrors["uid"] ? true : false}
+        error={!!loginErrors["uid"]}
       />
       <LoginSignupTextField
         type={showPassword ? "text" : "password"}
@@ -60,35 +75,23 @@ function LoginForm() {
         icon={
           <IconButton
             onClick={() => {
-              setShowPassword(showPassword ? false : true);
+              setShowPassword((prevShowPassword) => !prevShowPassword);
             }}
           >
             {showPassword ? <Key /> : <KeyOff />}
           </IconButton>
         }
-        ref={passwordElement}
+        ref={passwordRef}
         errorMessage={loginErrors["password"]}
-        error={loginErrors["password"] ? true : false}
+        error={!!loginErrors["password"]}
       />
       <Button>Forgot password?</Button>
       <br />
-      <Button variant="contained" onClick={() => logIn()}>
+      <Button variant="contained" onClick={handleLogin}>
         Log In
       </Button>
     </FormControl>
   );
 }
+
 export default LoginForm;
-
-function loginReducer(state, action) {
-  if (action.type === "SET_ERROR") {
-    return action.errors;
-  } else if (action.type === "NO_ERROR") {
-    return {};
-  }
-  return state;
-}
-
-// function validateEmail(email) {
-//   return /\S+@\S+\.\S+/.test(email);
-// }

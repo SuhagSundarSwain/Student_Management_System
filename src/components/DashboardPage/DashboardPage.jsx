@@ -2,10 +2,13 @@ import { useDispatch } from "react-redux";
 import { sideBarTabActions } from "../../store/sideBarTabSlice";
 import styles from "./DashboardPage.module.css";
 import Card from "../Card/Card";
+import { useEffect } from "react";
 
 const DashboardPage = () => {
   const dispatch = useDispatch();
-  dispatch(sideBarTabActions.setTabToDashboard());
+  useEffect(() => {
+    dispatch(sideBarTabActions.setTabToDashboard());
+  }, [dispatch]);
 
   const attendaceData = [
     { label: "present", value: 92 },

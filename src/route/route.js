@@ -4,9 +4,9 @@ import LoginPage from "./LoginPage";
 import LoginForm from "../components/LoginPage/LoginPageContainer/RightLoginFlex/LoginForm/LoginForm";
 import SignUpForm from "../components/LoginPage/LoginPageContainer/RightLoginFlex/SignupForm/SignupForm";
 import Body from "../components/Body/Body";
-import ResultPage from "../components/ResultPage/ResultPage";
+import ResultPage, { ResultTabSet } from "../components/ResultPage/ResultPage";
 import DashboardPage from "../components/DashboardPage/DashboardPage";
-
+import HomePage from "../components/HomePage/HomePage";
 
 const router = createBrowserRouter([
   {
@@ -17,6 +17,7 @@ const router = createBrowserRouter([
         path: "/",
         element: <Body />,
         children: [
+          { path: "/", element: <HomePage /> },
           { path: "/result", element: <ResultPage /> },
           { path: "/dashboard", element: <DashboardPage /> },
         ],

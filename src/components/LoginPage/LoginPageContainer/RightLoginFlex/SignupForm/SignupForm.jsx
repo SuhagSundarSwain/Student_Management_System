@@ -1,4 +1,4 @@
-import { useReducer, useRef, useState } from "react";
+import { useEffect, useReducer, useRef, useState } from "react";
 import { FormControl, IconButton, Button } from "@mui/material";
 import LoginSignupTextField from "../LoginSignupTextField/LoginSignupTextField";
 import { AccountCircle, Badge, Key, KeyOff, Phone } from "@mui/icons-material";
@@ -7,7 +7,9 @@ import { loginSignupActions } from "../../../../../store/loginSignupSlice";
 
 export default function SignUpForm() {
   const dispatch = useDispatch();
-  dispatch(loginSignupActions.setSignup());
+  useEffect(() => {
+    dispatch(loginSignupActions.setSignup());
+  }, []);
 
   const [showPassword, setShowPassword] = useState(false);
   const [signUpErrors, dispatchSignUpErrors] = useReducer(signUpReducer, {});

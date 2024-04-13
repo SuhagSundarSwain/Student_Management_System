@@ -1,4 +1,4 @@
-import SideBar from "../SideBar";
+import SideBar from "../SideBar/SideBar";
 import { Outlet } from "react-router-dom";
 import styles from "./Body.module.css";
 const Body = () => {
