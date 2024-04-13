@@ -20,7 +20,7 @@ export default function SignUpForm() {
   let phoneElement = useRef("");
 
   function signUp(name, phone, uid, password) {
-    fetch("http://127.0.0.1:1412/signup", {
+    fetch(process.env.REACT_APP_BACKEND_SERVER + "/signup", {
       headers: { "Content-Type": "application/json" },
       method: "POST",
       body: JSON.stringify({

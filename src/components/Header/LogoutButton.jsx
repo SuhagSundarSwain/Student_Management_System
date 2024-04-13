@@ -5,7 +5,7 @@ import { userInfoActions } from "../../store/userInfo";
 export default function LogoutButton() {
   const dispatch = useDispatch();
   const logout = () => {
-    fetch("http://127.0.0.1:1412/logout", {
+    fetch(process.env.REACT_APP_BACKEND_SERVER+"/logout", {
       method: "POST",
       credentials: "include",
     }).then((res) => {

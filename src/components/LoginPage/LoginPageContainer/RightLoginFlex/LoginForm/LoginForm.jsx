@@ -30,7 +30,7 @@ function LoginForm() {
     const uid = uidRef.current.value;
     const password = passwordRef.current.value;
 
-    fetch("http://127.0.0.1:1412/login", {
+    fetch(process.env.REACT_APP_BACKEND_SERVER+"/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",

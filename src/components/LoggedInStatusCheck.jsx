@@ -10,7 +10,7 @@ export default function LoggedInStatusCheck() {
 
   useEffect(() => {
     dispatch(fetchStatusActions.setFetchStart());
-    fetch("http://127.0.0.1:1412/loggedin", {
+    fetch(process.env.REACT_APP_BACKEND_SERVER+"/loggedin", {
       method: "POST",
       credentials: "include",
     })
