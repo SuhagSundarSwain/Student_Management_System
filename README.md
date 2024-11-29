@@ -124,7 +124,7 @@ npm start
 
 The frontend will be available at `http://localhost:3000`.
 
-### 🛠️ Project Structure
+## 🛠️ **Project Structure**
 
 #### Frontend
 ```css
@@ -163,7 +163,7 @@ src/
 └── server.js
 ```
 
-### 📖 How It Works
+## 📖 **How It Works**
 #### 1. Authentication:
 - The application uses JWT for secure login and access control.
 - Students and administrators can log in and interact with the system based on their roles.
@@ -182,7 +182,7 @@ src/
 - Redux handles real-time state management, ensuring data consistency across different parts of the app.
 
 
-### ✨ Future Enhancements
+## ✨ **Future Enhancements**
 - **Mobile App**: Develop a mobile version for better access on smartphones.
 - **Notification System**: Implement email and push notifications for deadlines, grades, and attendance alerts.
 - **Advanced Analytics**: Provide detailed charts and graphs for academic performance insights.
@@ -190,7 +190,7 @@ src/
 - **Cloud Deployment**: Host the application on cloud platforms like AWS or Heroku for better scalability.
 
 
-### 👨‍💻 Contributing
+## 👨‍💻 **Contributing**
 #### We welcome contributions! Here’s how you can help:
 
 - Fork the repository.
