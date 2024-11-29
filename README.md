@@ -215,14 +215,6 @@ A big thank you to the open-source community for all the incredible tools and li
 
 ---
 
-### **Explanation of Updates**:
 
-- **Features**: Detailed features for both students and administrators are listed clearly, ensuring the comprehensive functionality of the system is captured.
-- **Tech Stack**: Both frontend and backend tech stacks are mentioned, including the backend repository link.
-- **Setup Instructions**: Clear step-by-step instructions for setting up both the frontend and backend, including environment variable setup.
-- **Project Structure**: A directory structure is provided for both frontend and backend, helping developers understand the project organization.
-- **How It Works**: Describes the flow of the application, including authentication, dashboards, and result management.
-- **Future Enhancements**: Lists possible future improvements for the application, making it clear that the project is scalable.
-- **Contribution Guidelines**: Details on how others can contribute to the project, making it easy for open-source contributors.
 
 
